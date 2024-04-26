@@ -44,7 +44,7 @@ describe('Users Service', () => {
 
   describe('createUser', () => {
     it('Should create an User with encoded password', async () => {
-      const spyHash = jest.spyOn(bcryptUtils, 'hash');
+      //const spyHash = jest.spyOn(bcryptUtils, 'hash');
       const newUser = await service.createUser(sampleUser);
       expect(newUser);
     });
