@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - vof-volumen:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-cloud
+    environment:
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5433
+      - DB_USER=postgres
+      - DB_PASSWORD=root
+      - DB_DATABASE=vof_db
+      - SECRET_KEY=s3cr3t
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    volumes:
+      - ./src:/app/src
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: nest-pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=devjesg@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=root123
+    ports:
+      - '5051:5050'
+    depends_on:
+      - db
+volumes:
+  vof-volumen:
